@@ -61,28 +61,38 @@ app.post("/compose", function(req,res){
     title: req.body.titleText,
     content: req.body.composeText
   });
-  post.save();
-res.redirect("/");
-});
-
-app.get("/posts/:post", function(req,res){
-
-Post.find(function(err,foundPost){
-  if(!err){
-    foundPost.forEach(function(postBlock){
-      const postTitle = _.lowerCase(postBlock.title);
-    const adressTitle = _.lowerCase(req.params.post);
-      if(postTitle === adressTitle){
-
-      res.render("post.ejs", {
-        title: postBlock.title,
-        content: postBlock.content
-      })
-
+  post.save(function(err){
+    if (!err){
+      res.redirect("/");
     }
   });
-  }
-})
+});
+
+app.post("/delete",function(req,res){
+  const postID = req.body.delete;
+  Post.findByIdAndDelete(postID,function(err){
+    if(!err){
+      res.redirect("/");
+    }else{
+      console.log(err);
+    }
+  })
+});
+
+
+
+
+app.get("/posts/:postID", function(req,res){
+
+const postID = req.params.postID;
+
+Post.findById(postID, function(err, foundPost){
+  res.render("post.ejs", {
+          title: foundPost.title,
+          content: foundPost.content
+        });
+});
+
 
 });
 

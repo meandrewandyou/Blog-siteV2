@@ -3,16 +3,23 @@
 <p><%= firstParagraph %></p>
 
 
+
+
+
 <% postContent.forEach(function(post){%>
 
+<div class="block">
+
+
   <h1><%= post.title %></h1>
-  <p><%= post.content.substring(0,100) + "..." %></p>
-  <a href="posts/+ <%= post.title %>" >Read more</a>
+  <p class="content"><%= post.content.substring(0,100) + "..." %></p>
+  <a href="posts/<%= post._id %>" class="readmore">Read more</a>
+  <form class="" action="/delete" method="post">
+    <button class="btn btn-sml btn-danger" type="submit" value="<%= post._id %>" name="delete">Delete</button>
 
+  </form>
+</div>
 <%});%>
-
-
-
 
 
 
